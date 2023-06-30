@@ -1,9 +1,7 @@
 <template>
   <div
     :id="id"
-    @dragstart="onDragStart"
     class="inventory-item"
-    draggable="true"
   >
 
   </div>
