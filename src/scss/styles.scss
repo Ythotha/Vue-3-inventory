@@ -34,6 +34,7 @@ body {
   overflow-x: hidden;
 }
 
+@import './blocks/custom-skeleton.scss';
 @import './blocks/page.scss';
 @import './blocks/img.scss';
 @import './blocks/btn.scss';

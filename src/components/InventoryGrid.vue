@@ -207,7 +207,7 @@ export default {
       right: 0;
       bottom: 0;
       padding: .2rem .4rem;
-      border: .1rem solid var(--color-gray);
+      border: var(--default-border);
       border-top-left-radius: .6rem;
 
       background-color: var(--color-black);
@@ -219,7 +219,7 @@ export default {
       position: fixed;
       top: 0;
       left: 0;
-      border: .1rem solid var(--color-gray);
+      border: var(--default-border);
       border-radius: calc(var(--border-radius) * 2);
       
       background-color: var(--color-black);
