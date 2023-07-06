@@ -1,0 +1,15 @@
+.slide-from-right-enter-active,
+.slide-from-right-leave-active {
+  transition-duration: calc(var(--transition-duration) * 2);
+}
+
+.slide-from-right-enter-from,
+.slide-from-right-leave-to {
+  // backdrop-filter не работает с transform
+  // transform: translateX(100%);
+  right: calc(var(--slide-from-right-distance) * -1) !important;
+}
+
+.slide-from-right-enter-to {
+  transform: none;
+}

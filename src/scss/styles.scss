@@ -1,7 +1,7 @@
 @font-face {
   font-family: 'Inter';
-  src: url('../assets/fonts/Inter-Regular.woff2') format('woff2'),
-      url('../assets/fonts/Inter-Regular.woff') format('woff');
+  src: url('~@/assets/fonts/Inter-Regular.woff2') format('woff2'),
+      url('~@/assets/fonts/Inter-Regular.woff') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -9,14 +9,15 @@
 
 @font-face {
   font-family: 'Inter';
-  src: url('../assets/fonts/Inter-Medium.woff2') format('woff2'),
-      url('../assets/fonts/Inter-Medium.woff') format('woff');
+  src: url('~@/assets/fonts/Inter-Medium.woff2') format('woff2'),
+      url('~@/assets/fonts/Inter-Medium.woff') format('woff');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @import './variables.scss';
+@import './vue-transitions.scss';
 
 html {
   font-family: Inter, Arial, sans-serif;
@@ -27,8 +28,13 @@ html {
 body {
   margin: 0;
 
-  font-size: 1.6rem;
+  font-size: 1.4rem;
+  color: var(--color-lightgray);
+
+  overflow-x: hidden;
 }
 
 @import './blocks/page.scss';
-
+@import './blocks/img.scss';
+@import './blocks/btn.scss';
+@import './blocks/input.scss';

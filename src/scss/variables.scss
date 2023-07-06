@@ -1,8 +1,15 @@
 :root {
-  --color-bg-dark: #1D1D1D;
-
+  --color-white: #FFFFFF;
   --color-black: #262626;
   --color-gray: #4D4D4D;
+  --color-lightgray: #7D7D7D;
+  --color-red: #FA7272;
+  --color-red-hover: #FF8888;
+  
+  --color-bg-dark: #1D1D1D;
+  --color-bg-black-transparent: rgba(38, 38, 38, 0.50);
 
   --border-radius: 1.2rem;
+
+  --transition-duration: 200ms
 }

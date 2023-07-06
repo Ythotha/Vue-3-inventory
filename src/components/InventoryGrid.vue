@@ -5,36 +5,45 @@
     :class="{'grabbing' : isDragging }"
     ref="wrapperRef"
   >
-    <template v-for="(row, i) in matrix">
+    <template v-for="(row, i) in inventoryStore.inventory">
       <div
         v-for="(item, j) in row"
         :key="j"
         class="inventory-grid__cell"
         :data-position="`${i}-${j}`"
       >
-        <inventory-item
+        <div
           v-if="item"
-          :id="index"
           :data-position="`${i}-${j}`"
-          style="background: orange;"
           class="inventory-grid__item"
-      >
-        </inventory-item>
+          @click="onItemClick"
+        >
+          <img :src="item.img" :alt="item.text" class="inventory-grid__img">
+          <span class="inventory-grid__quantity">
+            {{ item.quantity }}
+          </span>
+        </div>
       </div>
     </template>
+    <off-canvas v-model="isInfoVisible">
+      <item-info/>
+    </off-canvas>
   </div>
 </template>
 
 <script>
 import { ref, reactive, computed } from 'vue'
+import { useInventoryStore } from '@/stores/inventory'
 
 import mouseDrag from '@/directives/v-mouse-drag'
 
-import InventoryItem from './InventoryItem.vue'
+import OffCanvas from './OffCanvas'
+import ItemInfo from './ItemInfo'
 
 export default {
   components: {
-    InventoryItem,
+    OffCanvas,
+    ItemInfo,
   },
 
   directives: {
@@ -42,19 +51,8 @@ export default {
   },
 
   setup() {
-    // const matrix = reactive([
-    //   [ true, false, false, false, false ],
-    //   [ false, false, false, false, false ],
-    //   [ false, false, false, false, false ],
-    //   [ false, false, false, true, false ],
-    //   [ false, false, false, false, false ]
-    // ])
+    const inventoryStore = useInventoryStore()
 
-    const size = 5
-    const matrix = reactive(Array(size).fill(null).map(() => Array(size).fill(false)))
-
-    matrix[0][0] = true
-    
     const copyNode = ref(null)
     const wrapperRef = ref(null)
     const startPosition = reactive({ x: 0, y: 0 })
@@ -79,6 +77,7 @@ export default {
     }
 
     function onStart(event) {
+      if (event.which !== 1) return
       if (!event.target.classList.contains('inventory-grid__item')) return
 
       startPosition.x = event.offsetX
@@ -104,22 +103,47 @@ export default {
       const [ fromY, fromX ] = copyNode.value.dataset.position.split('-')
       const [ toY, toX ] = event.target.dataset.position.split('-')
 
-      matrix[fromY][fromX] = false
-      matrix[toY][toX] = true
-
       copyNode.value = null
+
+      if (fromY === toY && fromX === toX) return
+
+      inventoryStore.changeItemPosition({fromY, fromX, toY, toX})
     }
 
 
+    function onItemClick(event) {
+      const [ toY, toX ] = event.target.dataset.position.split('-')
+
+      inventoryStore.setCurrentItemAddress(`${toY}-${toX}`)
+    }
+
+    const isInfoVisible = computed({
+      get() {
+        return !!inventoryStore.getCurrentItem
+      },
+      set(val) {
+        if(!val) {
+          inventoryStore.clearCurrentItemAddress()
+        }
+
+      }
+    })
+
+
     return {
+      copyNode,
       wrapperRef,
-      matrix,
+
+      inventoryStore,
 
       isDragging,
 
       onDrag,
       onStart,
       onEnd,
+      onItemClick,
+
+      isInfoVisible,
     }
   },
 }
@@ -127,6 +151,7 @@ export default {
 
 <style lang="scss">
   .inventory-grid {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: .1rem;
@@ -151,29 +176,69 @@ export default {
       user-select: none;
     }
 
+    &__item,
+    &__avatar {
+      display: grid;
+      place-items: center;
+    }
+
     &__item {
+      position: relative;
+      
       height: 100%;
 
-      cursor: grab;
+      cursor: pointer;
     }
 
     &.grabbing &__item{
       cursor: grabbing;
     }
 
+    &__img {
+      --img-size: 5.4rem;
+      max-width: var(--img-size);
+      max-height: var(--img-size);
+
+      pointer-events: none;
+    }
+
+    &__quantity {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      padding: .2rem .4rem;
+      border: .1rem solid var(--color-gray);
+      border-top-left-radius: .6rem;
+
+      background-color: var(--color-black);
+
+      font-size: 1rem;
+    }
+
     &__avatar {
-      display: none;
       position: fixed;
       top: 0;
       left: 0;
+      border: .1rem solid var(--color-gray);
+      border-radius: calc(var(--border-radius) * 2);
+      
+      background-color: var(--color-black);
 
       pointer-events: none;
-      border: 1px solid;
-      border-radius: 24px;
     }
 
-    &__avatar.visible {
-      display: block;
+    &__avatar:not(.visible) {
+      display: none;
+    }
+
+    &__info {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+      max-width: 25rem;
+      width: 100%;
+      box-sizing: border-box;
     }
   }
 </style>
