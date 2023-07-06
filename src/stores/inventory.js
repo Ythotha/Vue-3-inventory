@@ -80,4 +80,4 @@ export const useInventoryStore = defineStore('inventory', () => {
     clearCurrentItemAddress,
     subtractFromCurrentItem,
   }
-})
+}, {persist: true})
