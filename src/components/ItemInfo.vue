@@ -28,7 +28,15 @@
         </button>
       </template>
       <template v-if="removeItemDialogVisible">
-        <input v-model="removeQuantity" min="1" :max="currentItem.quantity" class="input" type="number" placeholder="Введите количество">
+        <input
+          v-model="removeQuantity"
+          min="1"
+          :max="currentItem.quantity"
+          @input="onInput"
+          class="input"
+          type="number"
+          placeholder="Введите количество"
+        >
         <div class="item-info__row">
           <button
             @click="toggleRemoveDialogVisibility"
@@ -71,6 +79,11 @@ export default {
       inventoryStore.subtractFromCurrentItem(removeQuantity.value)
     }
 
+    function onInput(event) {
+      const value = Math.min(Math.max(1, parseInt(event.target.value) || 1), currentItem.value.quantity)
+      removeQuantity.value = value
+    }
+
     return {
       currentItem,
       removeItemDialogVisible,
@@ -78,6 +91,7 @@ export default {
       removeQuantity,
 
       subtractFromItem,
+      onInput,
     }
   },
 }
