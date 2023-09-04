@@ -7,18 +7,17 @@ export const useInventoryStore = defineStore('inventory', () => {
         quantity: 5,
         name: 'TOTK',
         text: 'Game of the year 2023',
-        img: 'https://loremflickr.com/cache/resized/65535_52230352689_bcee6be965_q_130_130_nofilter.jpg'
-        // img: 'https://loremflickr.com/130/130'
+        img: 'https://dummyimage.com/600x600/000000/ffffff'
       }, {
         quantity: 3,
         name: 'BOTW',
         text: 'Game of the year 2017',
-        img: 'https://loremflickr.com/cache/resized/65535_52313363183_365d8c9e44_q_130_130_nofilter.jpg'
+        img: 'https://dummyimage.com/600x600/25dbc6/000000'
       }, {
         quantity: 4,
         name: 'XC2',
         text: 'Game of the year 2018',
-        img: 'https://loremflickr.com/cache/resized/65535_52422330809_c86d4f09f3_q_130_130_nofilter.jpg'
+        img: 'https://dummyimage.com/600x600/ffffff/000000'
       }, null, null ],
     [ null, null, null, null, null ],
     [ null, null, null, null, null ],
